@@ -32,8 +32,8 @@ class Settings(BaseSettings):
 
     # OpenAI API Key
     OPENAI_API_KEY: str
-    OPENAI_API_BASE: str = "https://api.openai.com/v1"
-    OPENAI_MODEL: str = "gpt-4.1-nano"
+    OPENAI_BASE_URL: str = "https://api.openai.com/v1"
+    OPENAI_MODEL: str = "gpt-4o-mini"
 
     # 分块配置
     CHUNK_SIZE: int = 5000
@@ -43,9 +43,11 @@ class Settings(BaseSettings):
     SUPABASE_URL: str
     SUPABASE_SERVICE_KEY: str
 
-    TRANSPORT="sse"
+    # USE_CONTEXTUAL_EMBEDDINGS: bool = False
 
-    MD_FILE_SAVE_BASE_DIR = os.path.join(os.getcwd(), "markdowns")
+    TRANSPORT: str = 'sse'
 
-    
+    MD_FILE_SAVE_BASE_DIR: str = os.path.join(os.getcwd(), "markdowns")
+
+
 settings: Settings = Settings()  # type: ignore

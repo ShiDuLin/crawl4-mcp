@@ -7,40 +7,13 @@ import aiohttp
 
 
 def is_sitemap(url: str) -> bool:
-    """
-    Check if a URL is a sitemap.
-
-    Args:
-        url: URL to check
-
-    Returns:
-        True if the URL is a sitemap, False otherwise
-    """
     return url.endswith("sitemap.xml") or "sitemap" in urlparse(url).path
 
 
 def is_txt(url: str) -> bool:
-    """
-    Check if a URL is a text file.
-
-    Args:
-        url: URL to check
-
-    Returns:
-        True if the URL is a text file, False otherwise
-    """
     return url.endswith(".txt")
 
 def parse_sitemap(sitemap_url: str) -> list[str]:
-    """
-    Parse a sitemap and extract URLs.
-    
-    Args:
-        sitemap_url: URL of the sitemap
-        
-    Returns:
-        List of URLs found in the sitemap
-    """
     resp = requests.get(sitemap_url)
     urls = []
 
@@ -82,16 +55,6 @@ async def auto_get_sitemap_url(url: str) -> str:
 async def crawl_markdown_file(
     crawler: AsyncWebCrawler, url: str
 ) -> list[dict[str, Any]]:
-    """
-    Crawl a .txt or markdown file.
-
-    Args:
-        crawler: AsyncWebCrawler instance
-        url: URL of the file
-
-    Returns:
-        List of dictionaries with URL and markdown content
-    """
     crawl_config = CrawlerRunConfig()
 
     result = await crawler.arun(url=url, config=crawl_config)
@@ -102,17 +65,6 @@ async def crawl_markdown_file(
         return []
 
 async def crawl_batch(crawler: AsyncWebCrawler, urls: list[str], max_concurrent: int = 10) -> list[dict[str, Any]]:
-    """
-    Batch crawl multiple URLs in parallel.
-    
-    Args:
-        crawler: AsyncWebCrawler instance
-        urls: List of URLs to crawl
-        max_concurrent: Maximum number of concurrent browser sessions
-        
-    Returns:
-        List of dictionaries with URL and markdown content
-    """
     crawl_config = CrawlerRunConfig(cache_mode=CacheMode.BYPASS, stream=False)
     dispatcher = MemoryAdaptiveDispatcher(
         memory_threshold_percent=70.0,
@@ -125,18 +77,6 @@ async def crawl_batch(crawler: AsyncWebCrawler, urls: list[str], max_concurrent:
 
 
 async def crawl_recursive_internal_links(crawler: AsyncWebCrawler, start_urls: list[str], max_depth: int = 3, max_concurrent: int = 10) -> list[dict[str, Any]]:
-    """
-    Recursively crawl internal links from start URLs up to a maximum depth.
-    
-    Args:
-        crawler: AsyncWebCrawler instance
-        start_urls: List of starting URLs
-        max_depth: Maximum recursion depth
-        max_concurrent: Maximum number of concurrent browser sessions
-        
-    Returns:
-        List of dictionaries with URL and markdown content
-    """
     run_config = CrawlerRunConfig(cache_mode=CacheMode.BYPASS, stream=False)
     dispatcher = MemoryAdaptiveDispatcher(
         memory_threshold_percent=70.0,
